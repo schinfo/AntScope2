@@ -12,7 +12,9 @@ BleAnalyzer::BleAnalyzer(QObject *parent)
     m_deviceDiscoveryAgent->setLowEnergyDiscoveryTimeout(5000);
 
     connect(m_deviceDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BleAnalyzer::addDevice);
+//  ============= Error======================================================================================================
     connect(m_deviceDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::errorOccurred, this, &BleAnalyzer::scanError);
+//  =========================================================================================================================
 
     connect(m_deviceDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished, this, &BleAnalyzer::scanFinished);
     connect(m_deviceDiscoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled, this, &BleAnalyzer::scanFinished);
@@ -246,7 +248,9 @@ void BleAnalyzer::setDevice(BleDeviceInfo *device)
         connect(m_control, &QLowEnergyController::discoveryFinished,
                 this, &BleAnalyzer::serviceScanDone);
 
+//  ============= Error===========================================================================
         connect(m_control, &QLowEnergyController::errorOccurred, this,
+//  ==============================================================================================
                 [this](QLowEnergyController::Error error) {
                     Q_UNUSED(error);
                     setError("Cannot connect to remote device.");
@@ -296,11 +300,13 @@ void BleAnalyzer::serviceScanDone()
 void BleAnalyzer::serviceStateChanged(QLowEnergyService::ServiceState s)
 {
     switch (s) {
+//  ============= Error===========================================================================
     case QLowEnergyService::RemoteServiceDiscovering:
         setInfo(tr("Discovering services..."));
         break;
     case QLowEnergyService::RemoteServiceDiscovered:
-    {
+//  ==============================================================================================
+     {
         setInfo(tr("Service discovered."));
         setInfo("Characteristics:");
 //        for (auto chara : m_service->characteristics()) {
